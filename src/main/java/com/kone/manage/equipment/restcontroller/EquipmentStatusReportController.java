@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
+/**
+ * API for equipment management
+ */
 @RestController
 @RequestMapping(path = "/equipment")
 public class EquipmentStatusReportController {

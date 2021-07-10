@@ -13,7 +13,11 @@ public class EquipmentStatusReportService {
         this.equipmentStatusReportRepository = equipmentStatusReportRepository;
     }
 
-    public void validate(Equipment inputEquipment) {
+  /**
+   * validate incoming equipment and return if there is duplicate
+   * @param inputEquipment
+   */
+  public void validate(Equipment inputEquipment) {
         equipmentStatusReportRepository.findAll().forEach(equipment -> {
             if (inputEquipment.equals(equipment)) {
                 throw new DuplicateEquipmentException("Duplicate equipment");
