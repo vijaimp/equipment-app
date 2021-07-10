@@ -6,6 +6,9 @@ import com.kone.manage.equipment.repository.EquipmentStatusReportRepository;
 import com.kone.manage.equipment.service.EquipmentStatusReportService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 
 @RestController
 @RequestMapping(path = "/equipment")
@@ -21,12 +24,16 @@ public class EquipmentStatusReportController {
 
   @GetMapping("/search")
   Equipments searchEquipments(final @RequestParam("limit") Integer numberOfEquipments) {
-    return new Equipments();
+    Equipments equipments = new Equipments();
+    equipments.setEquipments(StreamSupport.stream(equipmentStatusReportRepository.findAll().spliterator(), false)
+      .limit(numberOfEquipments)
+      .collect(Collectors.toList()));
+    return equipments;
   }
 
   @GetMapping("/{equipmentNumber}")
   Equipment getEquipmentById(@PathVariable Long equipmentNumber) {
-    return new Equipment();
+    return equipmentStatusReportRepository.findById(equipmentNumber).orElse(new Equipment());
   }
 
   @PostMapping

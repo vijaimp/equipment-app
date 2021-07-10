@@ -45,6 +45,40 @@ public class EquipmentStatusReportControllerTest {
     private EquipmentStatusReportService equipmentStatusReportService;
 
     @Test
+    public void retrieveEquipments() throws Exception {
+        int numberOfEquipments = 3;
+        Mockito.when(equipmentStatusReportRepository.findAll()).thenReturn(mockEquipments());
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/equipment/search?limit=" + numberOfEquipments).accept(
+                MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        assertEquals("Status", 200, result.getResponse().getStatus());
+        Equipments equipments = parseJSON(result.getResponse().getContentAsString(), Equipments.class);
+        assertTrue("Number of equipments", equipments.getEquipments().size() == numberOfEquipments);
+    }
+
+    @Test
+    public void retrieveEquipmentById() throws Exception {
+        long equipmentNumber = 1l;
+
+        Mockito.when(equipmentStatusReportRepository.findById(equipmentNumber)).thenReturn(Optional.ofNullable(mockEquipment()));
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/equipment/" + equipmentNumber).accept(
+                MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        assertEquals("Status", 200, result.getResponse().getStatus());
+        Equipment equipment = parseJSON(result.getResponse().getContentAsString(), Equipment.class);
+        assertTrue("Equipment number", equipment.getEquipmentNumber() == 1);
+        assertTrue("Equipment status", equipment.getStatus() == EquipmentStatus.RUNNING);
+    }
+
+    @Test
     public void createEquipment() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/equipment")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(mockInputEquipmentJson("STOPPED"))).andReturn();
