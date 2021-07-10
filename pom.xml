@@ -9,9 +9,9 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.kone</groupId>
-  <artifactId>no-git-equipment-app</artifactId>
+  <artifactId>equipment-app</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>no-git-equipment-app</name>
+  <name>equipment-app</name>
   <properties>
     <java.version>1.8</java.version>
   </properties>
